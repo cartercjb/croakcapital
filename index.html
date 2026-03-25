@@ -379,8 +379,6 @@
     pointer-events: none;
   }
 
-  /* ── TEMP: Test Fill Button ── */
-  .dev-fill-btn {
     position: fixed;
     bottom: 1.25rem;
     right: 1.25rem;
@@ -397,13 +395,6 @@
     z-index: 9999;
     box-shadow: 0 4px 12px rgba(231,76,60,0.3);
     transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .dev-fill-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(231,76,60,0.4);
-  }
-  .dev-fill-btn::before {
-    content: "\26A0  ";
   }
 
 
@@ -431,34 +422,6 @@
     pointer-events: none;
   }
 
-  /* ── TEMP: Test Fill Button ── */
-  .test-fill-btn {
-    position: fixed;
-    bottom: 1.25rem;
-    right: 1.25rem;
-    background: #e74c3c;
-    color: #fff;
-    font-family: monospace;
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 0.5rem 1rem;
-    border: 2px dashed #c0392b;
-    border-radius: 6px;
-    cursor: pointer;
-    z-index: 9999;
-    box-shadow: 0 4px 12px rgba(231,76,60,0.3);
-    transition: background 0.15s, transform 0.15s;
-    letter-spacing: 0.5px;
-  }
-  .test-fill-btn:hover {
-    background: #c0392b;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(231,76,60,0.4);
-  }
-  .test-fill-btn::before {
-    content: '⚠ ';
-  }
-
 </style>
 </head>
 <body>
@@ -471,7 +434,6 @@
   <div class="hero-inner">
     <div class="hero-pill">Now Accepting Applications</div>
     <h1>Internship <em>Application</em></h1>
-    <p>Planning for all of life's crazy, beautiful moments &mdash; starting with yours.</p>
   </div>
 </div>
 
@@ -573,7 +535,7 @@
     </div>
 
     <div class="submission-error" id="submissionError">
-      Something went wrong submitting your application. Please try again, or email us directly at <a href="mailto:hello@croakcapital.com" style="color:var(--error);font-weight:700;">hello@croakcapital.com</a>.
+      Something went wrong submitting your application. Please try again, or email us directly at <a href="/cdn-cgi/l/email-protection#c1a9a4adadae81a2b3aea0aaa2a0b1a8b5a0adefa2aeac" style="color:var(--error);font-weight:700;"><span class="__cf_email__" data-cfemail="6a020f0606052a0918050b01090b1a031e0b0644090507">[email&#160;protected]</span></a>.
     </div>
 
     <div class="step-nav" id="stepNav">
@@ -585,11 +547,11 @@
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ┌──────────────────────────────────────────────────┐
   // │  PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE │
   // └──────────────────────────────────────────────────┘
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx88CK6_5ZIrv0PxJifaRXsiEwO6sRRebjHy5D-LIhv_0hqB3bm0lNRgpV2Kj0CWIVP/exec';
+  const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
 
   let currentStep = 1;
   const totalSteps = 4;
@@ -762,140 +724,6 @@
     el.classList.add('selected');
     document.getElementById('internType').value = el.dataset.value;
   }
-</script>
-
-
-<!-- TEMP: Remove before production -->
-<button class="dev-fill-btn" onclick="devFillAll()" title="Remove this button before going live">DEV: Fill All Fields</button>
-
-<script>
-function devFillAll() {
-  // Step 1: Contact
-  document.getElementById('firstName').value = 'Jane';
-  document.getElementById('lastName').value = 'Smith';
-  document.getElementById('email').value = 'jane.smith@utoledo.edu';
-  document.getElementById('phone').value = '(419) 555-1234';
-  document.getElementById('street').value = '742 Evergreen Terrace';
-  document.getElementById('city').value = 'Toledo';
-  document.getElementById('zip').value = '43604';
-  document.getElementById('linkedin').value = 'https://linkedin.com/in/janesmith';
-
-  // State dropdown
-  const stateSelect = document.getElementById('state');
-  for (let i = 0; i < stateSelect.options.length; i++) {
-    if (stateSelect.options[i].value === 'OH') {
-      stateSelect.selectedIndex = i;
-      break;
-    }
-  }
-
-  // Step 2: Academic
-  const gradeSelect = document.getElementById('grade');
-  for (let i = 0; i < gradeSelect.options.length; i++) {
-    if (gradeSelect.options[i].value === 'undergraduate') {
-      gradeSelect.selectedIndex = i;
-      break;
-    }
-  }
-  document.getElementById('gradDate').value = '2026-05';
-  document.getElementById('major').value = 'Finance';
-
-  // Step 3: Interests - check first two boxes
-  const checkboxes = document.querySelectorAll('input[name="interests"]');
-  if (checkboxes.length >= 2) {
-    checkboxes[0].checked = true;
-    checkboxes[1].checked = true;
-  }
-
-  document.getElementById('topInterest').value = 'I am most interested in financial planning because I want to help families build long-term wealth strategies. I enjoy the analytical and relational aspects of the work.';
-  document.getElementById('skills').value = 'I am hoping to gain hands-on experience with client-facing financial planning, portfolio analysis, and learn how a boutique RIA operates day-to-day.';
-  document.getElementById('whyCroak').value = 'Croak Capital stands out because of its fiduciary-first approach and boutique client experience. I want to learn from a team that prioritizes relationships over transactions.';
-
-  // Step 4: Availability
-  document.getElementById('startDate').value = '2026-06';
-  document.getElementById('endDate').value = '2026-08';
-  // Toggle is already defaulted to full-time
-
-  // Clear any existing error states
-  document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
-  document.querySelectorAll('.error-msg.visible').forEach(el => el.classList.remove('visible'));
-  document.querySelectorAll('.step-error-banner.visible').forEach(el => el.classList.remove('visible'));
-
-  // Flash the button green to confirm
-  const btn = document.querySelector('.dev-fill-btn');
-  btn.style.background = '#27ae60';
-  btn.style.borderColor = '#1e8449';
-  btn.textContent = 'ALL FIELDS FILLED ✓';
-  setTimeout(() => {
-    btn.style.background = '#e74c3c';
-    btn.style.borderColor = '#c0392b';
-    btn.textContent = 'DEV: Fill All Fields';
-  }, 1500);
-}
-</script>
-
-
-<!-- TEMP: Remove before finalizing -->
-<button class="test-fill-btn" onclick="fillTestData()">FILL TEST DATA</button>
-
-<script>
-function fillTestData() {
-  // Step 1: Contact
-  document.getElementById('firstName').value = 'Sarah';
-  document.getElementById('lastName').value = 'Mitchell';
-  document.getElementById('email').value = 'sarah.mitchell@utoledo.edu';
-  document.getElementById('phone').value = '(419) 555-0147';
-  document.getElementById('street').value = '2847 W Bancroft St, Apt 12';
-  document.getElementById('city').value = 'Toledo';
-  document.getElementById('state').value = 'OH';
-  document.getElementById('zip').value = '43606';
-  document.getElementById('linkedin').value = 'https://linkedin.com/in/sarah-mitchell-finance';
-
-  // Step 2: Academic
-  document.getElementById('grade').value = 'undergraduate';
-  document.getElementById('gradDate').value = '2026-05';
-  document.getElementById('major').value = 'Finance & Accounting';
-
-  // Step 3: Interests — check a few boxes
-  const interestsToCheck = ['financial_planning', 'investment_analysis', 'accounting_tax'];
-  document.querySelectorAll('input[name="interests"]').forEach(cb => {
-    if (interestsToCheck.includes(cb.value)) {
-      cb.checked = true;
-      // Trigger the visual state for cb-card
-      const card = cb.closest('.cb-card');
-      if (card) {
-        // Force a re-evaluation of :has selector by toggling
-        cb.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    }
-  });
-
-  document.getElementById('topInterest').value = 'Financial planning is the area that interests me most. I want to understand how comprehensive wealth management works for high-net-worth families — not just the investment side, but the full picture including tax strategy, estate coordination, and long-term goal setting.';
-  document.getElementById('skills').value = 'I\'m hoping to gain hands-on experience with client-facing work, learn how a boutique RIA operates day-to-day, and get exposure to financial planning software and portfolio analysis tools. I want to leave with a clear sense of whether wealth management is the right career path for me.';
-  document.getElementById('whyCroak').value = 'Croak Capital stands out because of the boutique, client-first approach. I\'ve read about your fiduciary model and in-house portfolio management, and that\'s the kind of firm I want to learn from — one where the advisors actually know their clients and aren\'t just selling products.';
-
-  // Step 4: Availability
-  document.getElementById('startDate').value = '2026-05';
-  document.getElementById('endDate').value = '2026-08';
-  // Toggle is already defaulted to full-time
-
-  // Trigger input events to clear any prior error states
-  document.querySelectorAll('input,select,textarea').forEach(el => {
-    el.dispatchEvent(new Event('input', { bubbles: true }));
-  });
-
-  // Visual feedback
-  const btn = document.querySelector('.test-fill-btn');
-  const orig = btn.textContent;
-  btn.textContent = '✓ ALL FIELDS FILLED';
-  btn.style.background = '#27ae60';
-  btn.style.borderColor = '#1e8449';
-  setTimeout(() => {
-    btn.textContent = orig;
-    btn.style.background = '#e74c3c';
-    btn.style.borderColor = '#c0392b';
-  }, 2000);
-}
 </script>
 
 </body>
