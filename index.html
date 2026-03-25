@@ -360,6 +360,25 @@
     margin-top: 2.5rem;
   }
 
+  
+  .submission-error {
+    background: var(--error-bg);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    margin: 0 2.5rem 0;
+    font-size: 0.82rem;
+    color: var(--error);
+    display: none;
+    line-height: 1.5;
+  }
+  .submission-error.visible { display: block; }
+  .btn-submitting {
+    background: var(--text-muted) !important;
+    cursor: wait !important;
+    pointer-events: none;
+  }
+
   /* ── TEMP: Test Fill Button ── */
   .dev-fill-btn {
     position: fixed;
@@ -391,6 +410,25 @@
   
   .form-wrap.confirmation-mode {
     margin-top: 2.5rem;
+  }
+
+  
+  .submission-error {
+    background: var(--error-bg);
+    border: 1px solid rgba(192,57,43,0.2);
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    margin: 0 2.5rem 0;
+    font-size: 0.82rem;
+    color: var(--error);
+    display: none;
+    line-height: 1.5;
+  }
+  .submission-error.visible { display: block; }
+  .btn-submitting {
+    background: var(--text-muted) !important;
+    cursor: wait !important;
+    pointer-events: none;
   }
 
   /* ── TEMP: Test Fill Button ── */
@@ -534,6 +572,10 @@
       </div>
     </div>
 
+    <div class="submission-error" id="submissionError">
+      Something went wrong submitting your application. Please try again, or email us directly at <a href="mailto:hello@croakcapital.com" style="color:var(--error);font-weight:700;">hello@croakcapital.com</a>.
+    </div>
+
     <div class="step-nav" id="stepNav">
       <button class="btn btn-back" id="btnBack" onclick="prevStep()" disabled>&larr; Back</button>
       <span class="nav-hint" id="navHint">Step 1 of 4</span>
@@ -544,6 +586,11 @@
 </div>
 
 <script>
+  // ┌──────────────────────────────────────────────────┐
+  // │  PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT URL HERE │
+  // └──────────────────────────────────────────────────┘
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx88CK6_5ZIrv0PxJifaRXsiEwO6sRRebjHy5D-LIhv_0hqB3bm0lNRgpV2Kj0CWIVP/exec';
+
   let currentStep = 1;
   const totalSteps = 4;
 
@@ -628,14 +675,73 @@
   }
 
   function showConfirmation() {
-    // Hide form elements
     document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
     document.getElementById('progressBar').style.display = 'none';
     document.getElementById('stepNav').style.display = 'none';
     document.getElementById('heroSection').style.display = 'none';
-    // Show confirmation
+    document.getElementById('submissionError').classList.remove('visible');
     document.getElementById('confirmationPage').classList.add('active');
     document.querySelector('.form-wrap').classList.add('confirmation-mode');
+  }
+
+  function collectFormData() {
+    const interests = [];
+    document.querySelectorAll('input[name="interests"]:checked').forEach(cb => {
+      interests.push(cb.value);
+    });
+
+    return {
+      firstName:   document.getElementById('firstName').value.trim(),
+      lastName:    document.getElementById('lastName').value.trim(),
+      email:       document.getElementById('email').value.trim(),
+      phone:       document.getElementById('phone').value.trim(),
+      street:      document.getElementById('street').value.trim(),
+      city:        document.getElementById('city').value.trim(),
+      state:       document.getElementById('state').value.trim(),
+      zip:         document.getElementById('zip').value.trim(),
+      linkedin:    document.getElementById('linkedin').value.trim(),
+      grade:       document.getElementById('grade').value.trim(),
+      gradDate:    document.getElementById('gradDate').value.trim(),
+      major:       document.getElementById('major').value.trim(),
+      interests:   interests,
+      topInterest: document.getElementById('topInterest').value.trim(),
+      skills:      document.getElementById('skills').value.trim(),
+      whyCroak:    document.getElementById('whyCroak').value.trim(),
+      internType:  document.getElementById('internType').value.trim(),
+      startDate:   document.getElementById('startDate').value.trim(),
+      endDate:     document.getElementById('endDate').value.trim()
+    };
+  }
+
+  async function submitForm() {
+    const btnNext = document.getElementById('btnNext');
+    const originalText = btnNext.textContent;
+
+    // Loading state
+    btnNext.textContent = 'Submitting\u2026';
+    btnNext.classList.add('btn-submitting');
+    document.getElementById('submissionError').classList.remove('visible');
+
+    const payload = collectFormData();
+
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      // no-cors means opaque response — a completed fetch = request reached Google
+      showConfirmation();
+
+    } catch (err) {
+      // Network failure
+      btnNext.textContent = originalText;
+      btnNext.classList.remove('btn-submitting');
+      document.getElementById('submissionError').classList.add('visible');
+      console.error('Submission failed:', err);
+    }
   }
 
   function nextStep() {
@@ -643,7 +749,7 @@
     if (currentStep < totalSteps) {
       goToStep(currentStep + 1);
     } else {
-      showConfirmation();
+      submitForm();
     }
   }
 
